@@ -4,6 +4,17 @@ import numpy as np
 from sqlalchemy import create_engine
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    Loads data from selected file (both messages and categories).
+
+    Args:
+        messages_filepath ([path]): Path for csv file containing messages.
+        categories_filepath ([path]): Path for csv file containing categories.
+
+    Returns:
+        [object]: Pandas dataframe with both merged.
+    """    
+
     # load messages dataset
     messages = pd.read_csv('data/disaster_messages.csv')
 
@@ -20,6 +31,15 @@ def load_data(messages_filepath, categories_filepath):
     return df
 
 def clean_data(df):
+    """
+    Cleans data obtained through load_data().
+
+    Args:
+        df ([object]): Pandas dataframe to be cleaned.
+
+    Returns:
+        [object]: Cleaned dataframe.
+    """    
     # create a dataframe of the 36 individual category columns
     categories = df['categories'].str.split(';', expand=True)
 
@@ -54,13 +74,17 @@ def clean_data(df):
 
     return df
 
-
-
 def save_data(df, database_filename):
+    """
+    Saves cleaned data to a SQL database.
+
+    Args:
+        df ([object]): Pandas database to be saved.
+        database_filename ([string]): Name of file to be saved.
+    """    
     # save everything to a database
     engine = create_engine('sqlite:///categorized_messages.db')
     df.to_sql('Cat', engine, index=False)  
-
 
 def main():
     print(sys.argv[1:])
