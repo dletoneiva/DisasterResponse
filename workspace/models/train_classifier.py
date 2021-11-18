@@ -23,6 +23,9 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.naive_bayes import GaussianNB, BernoulliNB
 from sklearn.multioutput import MultiOutputClassifier
 
+# model storage
+import pickle 
+
 # class used to transform data to an acceptable format for GaussianNB
 class DenseTransformer(BaseEstimator, TransformerMixin):
 
@@ -87,7 +90,7 @@ def build_model():
 
     # use gridsearch for hyperparameters tuning
     parameters = {
-    'clf__estimator__alpha': (0.1, 0.5, 0.9)
+        'clf__estimator__alpha': (0.1, 0.5, 0.9)
     }
 
     cv = GridSearchCV(pipeline, param_grid=parameters)
@@ -99,7 +102,7 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
 
 def save_model(model, model_filepath):
-    pass
+    pickle.dump(model, open(model_filepath,'wb'))
 
 
 def main():
