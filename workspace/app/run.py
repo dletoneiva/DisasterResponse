@@ -8,10 +8,15 @@ from nltk.tokenize import word_tokenize
 from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
-import joblib
+# import joblib
 from sqlalchemy import create_engine
 
-print('marco')
+import pickle
+
+# import functions from python module train_classifier
+from classifier_module import tokenize, DenseTransformer
+
+
 app = Flask(__name__)
 
 def tokenize(text):
@@ -26,12 +31,13 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///workspace/DisasterResponse.db')
+df = pd.read_sql('select * from Cat', engine) # uncomment to run faster
+
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
-
+with open("workspace/models/classifier.pkl", 'rb') as pickle_file:
+    model = pickle.load(pickle_file)
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')

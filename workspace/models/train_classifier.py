@@ -56,8 +56,8 @@ def load_data(database_filepath):
         [type]: [description]
     """    
     # load data from database
-    engine = create_engine('sqlite:///categorized_messages.db')
-    df = pd.read_sql('select * from Cat',engine) # [:100] # uncomment to run faster
+    engine = create_engine('sqlite:///DisasterResponse.db')
+    df = pd.read_sql('select * from Cat',engine) [:100] # uncomment to run faster
 
 
     

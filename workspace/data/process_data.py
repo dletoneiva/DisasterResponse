@@ -83,7 +83,7 @@ def save_data(df, database_filename):
         database_filename ([string]): Name of file to be saved.
     """    
     # save everything to a database
-    engine = create_engine('sqlite:///categorized_messages.db')
+    engine = create_engine('sqlite:///DisasterResponse.db')
     df.to_sql('Cat', engine, index=False)  
 
 def main():
