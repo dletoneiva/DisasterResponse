@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar, Pie
 # import joblib
 from sqlalchemy import create_engine
 
@@ -45,9 +45,24 @@ with open("workspace/models/classifier.pkl", 'rb') as pickle_file:
 def index():
     
     # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
+    Y_cols = ['related', 'request', 'offer',
+          'aid_related', 'medical_help', 'medical_products', 
+          'search_and_rescue', 'security', 'military', 
+          'child_alone', 'water', 'food', 'shelter',
+          'clothing', 'money', 'missing_people', 'refugees', 
+          'death', 'other_aid', 'infrastructure_related', 
+          'transport', 'buildings', 'electricity', 'tools', 
+          'hospitals', 'shops', 'aid_centers', 'other_infrastructure',
+          'weather_related', 'floods', 'storm', 'fire', 
+          'earthquake', 'cold', 'other_weather', 'direct_report']
+    # count of classes
+    class_counts = df[Y_cols].sum().sort_values(ascending = False)[:8]
+    
+    # % of aid related
+    aid_related = df['aid_related'].sum()
+    totals = df[Y_cols].sum().sum()
+    aid_related_rate = aid_related / totals *100
+    
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
@@ -55,19 +70,31 @@ def index():
         {
             'data': [
                 Bar(
-                    x=genre_names,
-                    y=genre_counts
+                    x=class_counts.index,
+                    y=class_counts.values
                 )
             ],
 
             'layout': {
-                'title': 'Distribution of Message Genres',
+                'title': 'Distribution of Message Classes, top 8 classes',
                 'yaxis': {
                     'title': "Count"
                 },
                 'xaxis': {
-                    'title': "Genre"
+                    'title': "Class"
                 }
+            }
+        },
+        {
+            'data': [
+                Pie(
+                    labels=['Aid Related Issues', 'Non aid related issues'],
+                    values=[aid_related_rate, 100-aid_related_rate]
+                )
+            ],
+
+            'layout': {
+                'title': 'Fraction of aid related issues'
             }
         }
     ]
