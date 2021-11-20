@@ -72,6 +72,9 @@ def clean_data(df):
     # drop duplicates
     df = df.drop_duplicates()
 
+    # remove rows that are not binary
+    df = df.drop(df.loc[~df[column].isin([0,1])].index)['related'].unique()
+
     return df
 
 def save_data(df, database_filename):
