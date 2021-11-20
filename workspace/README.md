@@ -1,4 +1,20 @@
 # Disaster Response Pipeline Project
+Final project for the data engineering course.
+
+## Motivation
+
+## Files in repository
+
+
+## Quick start
+
+## Installation files
+
+## Creator
+
+Copyright Daniel Leto (dletoneiva@gmail.com). Please follow me on Twitter and Medium (@dletoneiva).
+
+
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
